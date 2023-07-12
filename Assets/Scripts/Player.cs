@@ -6,9 +6,9 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public static Player Instance { get; private set; }
-    
 
-    public event EventHandler <OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
+
+    public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
     public class OnSelectedCounterChangedEventArgs : EventArgs
     {
         public ClearCounter selectedCounter;
@@ -34,27 +34,14 @@ public class Player : MonoBehaviour
     {
         gameInput.OnInteractAction += GameInput_OnInteractAction;
     }
-
-    //agar player bisa interaksi sama object di depannya pake interaksi tombol E
-    private void GameInput_OnInteractAction(object sender, System.EventArgs e)
+        
+    private void GameInput_OnInteractAction(object sender, System.EventArgs e) //agar player bisa interaksi sama object di depannya pake interaksi tombol E
     {
-        Vector2 inputVector = gameInput.GetMovementVectorNormalized();
-
-        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
-
-        if (moveDir != Vector3.zero)
+        if(selectedCounter != null)
         {
-            lastInteractDir = moveDir;
+            selectedCounter.Interact();
         }
-
-        float interactDistance = 2f;
-        if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit raycastHit, interactDistance, countersLayerMask))
-        {
-            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
-            {
-                clearCounter.Interact();
-            }
-        }      
+        
     }
 
     private void Update()
@@ -83,23 +70,19 @@ public class Player : MonoBehaviour
         {
             if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
             {
-                
-                ////has clear counter 
-                //if(clearCounter != selectedCounter)
-                //{
-                //    SetSelectedCounter(clearCounter);
-                //}
-                //else
-                //{
-                //    SetSelectedCounter(null);
-                //}
+               if(clearCounter != selectedCounter)
+                {
+                    SetSelectedCounter( clearCounter);
+                }
             }
-            
             else
             {
-                
-                //SetSelectedCounter(null);
+                SetSelectedCounter(null);               
             }
+        }
+        else
+        {
+            SetSelectedCounter(null);
         }
     }
     private void HandleMovement()
@@ -163,14 +146,14 @@ public class Player : MonoBehaviour
         transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
     }
 
-    //private void SetSelectedCounter(ClearCounter selectedCounter)
-    //{
-    //    this.selectedCounter = selectedCounter;
+    private void SetSelectedCounter(ClearCounter selectedCounter)
+    {
+        this.selectedCounter = selectedCounter;
 
-    //    OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs
-    //    {
-    //        selectedCounter = selectedCounter
-    //    });
+        OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs
+        {
+            selectedCounter = selectedCounter
+        });
 
-    //}
+    }
 }
