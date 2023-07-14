@@ -12,6 +12,12 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6279375970637792420, guid: e3019a428ec77ff43b135f6dd6b60fa6,
+        type: 3}
+      propertyPath: kitchenObjectSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 72be80237177f6c4f95a58ab90ae7823,
+        type: 2}
     - target: {fileID: 8422786591916988508, guid: e3019a428ec77ff43b135f6dd6b60fa6,
         type: 3}
       propertyPath: m_Name

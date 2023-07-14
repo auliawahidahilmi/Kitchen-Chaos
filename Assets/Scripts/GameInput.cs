@@ -6,14 +6,18 @@ using System;
 public class GameInput : MonoBehaviour
 {
     public event EventHandler OnInteractAction;
-    private PlayerInputAction playerInputAction;
+    public event EventHandler OnInteractAlternateAction;
+
+    private PlayerInputActions playerInputActions;
 
     private void Awake()
     {
-        playerInputAction = new PlayerInputAction();
-        playerInputAction.Player.Enable();
+        playerInputActions = new PlayerInputActions();
+        playerInputActions.Player.Enable();
 
-        playerInputAction.Player.Interact.performed += Interact_performed;
+        playerInputActions.Player.Interact.performed += Interact_performed;
+        playerInputActions.Player.InteractAlternate.performed += InteractAlternate_performed;
+
     }
 
     private void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -21,9 +25,14 @@ public class GameInput : MonoBehaviour
         OnInteractAction?.Invoke(this, EventArgs.Empty);
     }
 
+    private void InteractAlternate_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        OnInteractAlternateAction?.Invoke(this, EventArgs.Empty);
+    }
+
     public Vector2 GetMovementVectorNormalized()
     {
-        Vector2 inputVector = playerInputAction.Player.Move.ReadValue<Vector2>();
+        Vector2 inputVector = playerInputActions.Player.Move.ReadValue<Vector2>();
         //normalized : agar resultan gaya nggak lebih dari 1 saat bergerak diagonal
 
         inputVector = inputVector.normalized;
