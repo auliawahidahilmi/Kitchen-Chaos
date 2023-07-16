@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CuttingCounter : BaseCounter
 {
-    [SerializeField] KitchenObjectSO cuttingkitchenObjectSO;
+    [SerializeField] CuttingRecipeSO[] cuttingRecipeSOArray;
 
     public override void Interact(Player player)
     {
@@ -14,7 +14,10 @@ public class CuttingCounter : BaseCounter
             if (player.HasKitchenObject())
             {
                 //player bawa sesuatu
-                player.GetKitchenObject().SetKitchenObjectParent(this);
+                if (HasRecipeInput(player.GetKitchenObject().GetKitchenObjectSO()))
+                {
+                    player.GetKitchenObject().SetKitchenObjectParent(this);
+                }
             }
             else
             {
@@ -38,12 +41,38 @@ public class CuttingCounter : BaseCounter
 
     public override void InteractAlternate(Player player)
     {
-        if (HasKitchenObject())
+        if (HasKitchenObject() && HasRecipeInput(GetKitchenObject().GetKitchenObjectSO()))
         {
-            //ada kitchen objek di sini
+            //ada kitchen objek di sini dan akan di potong
+            KitchenObjectSO outputKitchenObjectSO = GetOutputForInput(GetKitchenObject().GetKitchenObjectSO());
+           
             GetKitchenObject().DestroySelf();
 
-            KitchenObject.SpawnKitchenObject(cuttingkitchenObjectSO, this);
+            KitchenObject.SpawnKitchenObject(outputKitchenObjectSO, this);
         }
+    }
+
+    private bool HasRecipeInput(KitchenObjectSO inputKitcenObjectSO)
+    {
+        foreach (CuttingRecipeSO cuttingRecipeSO in cuttingRecipeSOArray)
+        {
+            if (cuttingRecipeSO.input == inputKitcenObjectSO)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private KitchenObjectSO GetOutputForInput(KitchenObjectSO inputKitchenObjectSO)
+    {
+        foreach(CuttingRecipeSO cuttingRecipeSO in cuttingRecipeSOArray)
+        {
+            if(cuttingRecipeSO.input == inputKitchenObjectSO)
+            {
+                return cuttingRecipeSO.output;
+            }
+        }
+        return null;
     }
 }
