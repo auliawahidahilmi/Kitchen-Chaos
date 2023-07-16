@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7b577c7e37cef145896b0f2ab7854de, type: 3}
+  m_Script: {fileID: 11500000, guid: aca92a8a5bbe6b54c934d2d1b4b730bf, type: 3}
   m_Name: MeatPattyCooked-MeatPattyBurned
   m_EditorClassIdentifier: 
   input: {fileID: 11400000, guid: 372e87aa4457b7644a97799580f2509c, type: 2}
   output: {fileID: 11400000, guid: 05dbe8d2471703948aa891dfad27ea6d, type: 2}
-  fryingTimerMax: 3
+  burningTimerMax: 5
