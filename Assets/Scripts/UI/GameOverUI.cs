@@ -3,10 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.UI;
 
 public class GameOverUI : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI recipeDeliveredText;
+    [SerializeField] Button playAgainButton;
+
+    private void Awake()
+    {
+        playAgainButton.onClick.AddListener(() =>
+        {
+            Loader.Load(Loader.Scene.GameScene);
+
+            
+        });
+    }
 
     private void Start()
     {
